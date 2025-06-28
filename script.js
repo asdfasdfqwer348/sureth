@@ -139,7 +139,7 @@ function findClosestStrokePoint(userPoint, points) {
 function setupTracing() {
   const canvas = document.getElementById('traceCanvas');
   const ctx = canvas.getContext('2d');
-  const svg = document.getElementById('syriacSvg');
+  const svg = document.getElementById('canvasSvg');
   const rect = svg.getBoundingClientRect();
 
   canvas.width = rect.width;
@@ -287,7 +287,7 @@ const header = document.getElementById('letterHeader');
 function switchCanvasLetter() {
     const canvas = document.getElementById('traceCanvas');
     const ctx = canvas.getContext('2d');
-    const svg = document.getElementById('syriacSvg');
+    const svg = document.getElementById('canvasSvg');
     const rect = svg.getBoundingClientRect();
 
     canvas.width = rect.width;
@@ -325,14 +325,14 @@ function createNewLetterStrokes() {
         stroke.setAttribute('d', path);
         stroke.classList.add('stroke');
         stroke.setAttribute('id', `stroke${index}`);
-        document.getElementById('syriacSvg').appendChild(stroke);
+        document.getElementById('canvasSvg').appendChild(stroke);
 
         // Create guide path
         const guidePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         guidePath.setAttribute('d', path);
         guidePath.classList.add('guidePath');
         guidePath.setAttribute('id', `guidePath${index}`);
-        document.getElementById('syriacSvg').appendChild(guidePath);
+        document.getElementById('canvasSvg').appendChild(guidePath);
 
         // Get starting point of the stroke
         const startingPoint = findStartingPoint(path);
@@ -358,7 +358,7 @@ function createNewLetterStrokes() {
         const mpath = document.createElementNS('http://www.w3.org/2000/svg', 'mpath');
         mpath.setAttribute('href', `#stroke${index}`);
         circleAnimation.appendChild(mpath);
-        document.getElementById('syriacSvg').appendChild(circle);
+        document.getElementById('canvasSvg').appendChild(circle);
 
         // Create arrow for the stroke
         const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -366,7 +366,7 @@ function createNewLetterStrokes() {
         arrow.setAttribute('id', `arrow${index}`);
         arrow.setAttribute('d', path);
         arrow.style.markerEnd = 'url(#arrow)';
-        document.getElementById('syriacSvg').appendChild(arrow);
+        document.getElementById('canvasSvg').appendChild(arrow);
 
         // Create label for the stroke
         const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -375,7 +375,7 @@ function createNewLetterStrokes() {
         label.textContent = index+1;
         label.setAttribute('x', STEP_LABEL_POSITIONS[currentLetterIndex][index][0]);
         label.setAttribute('y', STEP_LABEL_POSITIONS[currentLetterIndex][index][1]);
-        document.getElementById('syriacSvg').appendChild(label);
+        document.getElementById('canvasSvg').appendChild(label);
     });
 
     // Reset current stroke index

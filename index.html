@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trace Alap Beth Letters</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 id="letterHeader">Trace the Letter: ܐ</h1>
+  <div id="letterList" class="letter-list">
+    <button class="active" onclick="selectLetter(0)">ܐ</button>
+    <button onclick="selectLetter(1)">ܒ</button>
+    <button onclick="selectLetter(2)">ܓ</button>
+    <button onclick="selectLetter(3)">ܕ</button>
+    <button onclick="selectLetter(4)">ܗ</button>
+    <button onclick="selectLetter(5)">ܘ</button>
+    <button onclick="selectLetter(6)">ܙ</button>
+    <button onclick="selectLetter(7)">ܚ</button>
+    <button onclick="selectLetter(8)">ܛ</button>
+    <button onclick="selectLetter(9)">ܝ</button>
+    <button onclick="selectLetter(10)">ܟـ</button>
+    <button onclick="selectLetter(11)">ܠ</button>
+    <button onclick="selectLetter(12)">ܡـ</button>
+    <button onclick="selectLetter(13)">ܢـ</button>
+    <button onclick="selectLetter(14)">ܣـ</button>
+    <button onclick="selectLetter(16)">ܥ</button>
+    <button onclick="selectLetter(17)">ܦ</button>
+    <button onclick="selectLetter(18)">ܨ</button>
+    <button onclick="selectLetter(19)">ܩ</button>
+    <button onclick="selectLetter(20)">ܪ</button>
+    <button onclick="selectLetter(21)">ܫ</button>
+    <button onclick="selectLetter(22)">ܬ</button>
+  </div>
+
+  <div id="tracingArea">
+    <svg id="syriacSvg" viewBox="0 0 200 200">
+      <defs>
+        <marker id="arrow" markerWidth="4" markerHeight="4" refX="2" refY="2"
+                orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L4,2 L0,4 Z" fill="#1976d2" />
+        </marker>
+      </defs>
+    </svg>
+
+    <canvas id="traceCanvas" width="200" height="200"></canvas>
+  </div>
+
+  <button onclick="previousLetter()">< Previous Letter</button>
+  <button onclick="clearCanvas()">Clear & Replay</button>
+  <button onclick="nextLetter()">Next Letter ></button>
+  <script src="script.js"></script>
+</body>
+</html>

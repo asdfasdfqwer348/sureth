@@ -7,9 +7,25 @@ body {
   padding: 20px;
 }
 
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* allows stacking on small screens */
+  padding: 1rem;
+}
+
 h1 {
-  font-size: 24px;
+  margin: 0;
+  font-size: 1.5rem;
   color: #333;
+}
+
+.sound-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 /* Letter list styling */
@@ -100,13 +116,14 @@ svg, canvas {
 /* Step number labels */
 .label {
   font-size: 14px;
-  fill: #555;
+  fill: #efe522;
   font-weight: bold;
   pointer-events: none;
+  visibility: hidden;
 }
 
 /* Clear button styling */
-button {
+.control {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -117,6 +134,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.control:hover {
   background-color: #222;
 }

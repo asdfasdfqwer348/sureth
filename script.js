@@ -1,9 +1,9 @@
-let strokes, arrows;
+let strokes, arrows, circles, labels;
 let currentStrokeIndex = 0;
 let currentLetterIndex = 0;
 let strokePoints = [];
 const strokeAnimationDuration = 2; // 2 seconds
-const LETTERS = ["ܐ", "ܒ", "ܓ", "ܕ", "ܗ", "ܘ", "ܙ", "ܚ", "ܛ", "ܝ", "ܟ", "ܠ", "ܡ", "ܢ", "ܣ", "ܥ", "ܦ", "ܨ", "ܩ", "ܪ", "ܫ", "ܬ"];
+const LETTERS = ["ܐ", "ܒ", "ܓ", "ܕ", "ܗ", "ܘ", "ܙ", "ܚ", "ܛ", "ܝ", "ܟـ", "ܠ", "ܡـ", "ܢـ", "ܣ", "ܥ", "ܦ", "ܨ", "ܩ", "ܪ", "ܫ", "ܬ"];
 const STROKES_STEPS = [
     ["M140,150 L61,150", "M80,40 Q130,40 60,150", "M60,150 Q65,155 70,158"], // letter 1 Alap ܐ
     ["M 162.9584 139.5422 V 80.9413", "M 162.9584 80.9413 H 132.1594 q -12.299 0 -23.151 -0.9302 q -10.852 -0.9302 -15.5029 -2.1704", "M 162.9584 139.5422 H 84 q -12 0.4578 -22.0141 -2.5838 q -8.9859 -2.9584 -13.6425 -10.6453"], // letter 2 Beth ܒ
@@ -30,28 +30,29 @@ const STROKES_STEPS = [
 ];
 const STEP_LABEL_POSITIONS = [
     [["142", "145"], ["78", "30"], ["40", "150"]], // letter 1 Alap ܐ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter 2 Beth ܒ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter 3 Gamal ܓ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter 4 Dalath ܕ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter 5 Heh ܗ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter 6 Waw ܘ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter 7 Zain ܙ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter 8 Heth ܚ
-    [["300", "350"], ["80", "350"]], // letter 9 Teth ܛ
-    [["300", "350"], ["80", "350"]], // letter10 Yodh ܝ
-    [["300", "350"], ["80", "350"]], // letter11 Kap ܟ
-    [["300", "350"], ["80", "350"]], // letter12 Lamedh ܠ
-    [["300", "350"], ["80", "350"]], // letter13 Meem ܡ
-    [["300", "350"], ["80", "350"]], // letter14 Noon ܢ
-    [["300", "350"], ["80", "350"]], // letter15 Samketh ܣ
-    [["300", "350"], ["80", "350"]], // letter16 'eh ܥ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter17 Peh ܦ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter18 Tsadeh ܨ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter19 Qop ܩ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter20 Resh ܪ
-    [["300", "350"], ["80", "350"], ["80", "350"]], // letter21 Sheen ܫ
-    [["300", "350"], ["80", "350"]] // letter22 Taw ܬ
+    [["170", "140"], ["170", "80"], ["155", "160"]], // letter 2 Beth ܒ
+    [["120", "120"], ["100", "150"], ["135", "145"]], // letter 3 Gamal ܓ
+    [["150", "155"], ["130", "175"], ["105", "195"]], // letter 4 Dalath ܕ
+    [["175", "160"], ["175", "63"], ["66", "55"]], // letter 5 Heh ܗ
+    [["98", "176"]], // letter 6 Waw ܘ
+    [["127", "162"]], // letter 7 Zain ܙ
+    [["175", "117"], ["140", "80"], ["102", "80"]], // letter 8 Heth ܚ
+    [["130", "117"], ["140", "150"]], // letter 9 Teth ܛ
+    [["172", "117"], ["132", "77"]], // letter10 Yodh ܝ
+    [["160", "135"], ["150", "165"]], // letter11 Kap ܟ
+    [["138", "132"], ["128", "162"]], // letter12 Lamedh ܠ
+    [["170", "130"], ["145", "160"]], // letter13 Meem ܡ
+    [["140", "135"], ["125", "165"]], // letter14 Noon ܢ
+    [["173", "125"], ["150", "151"]], // letter15 Samketh ܣ
+    [["155", "138"], ["137", "118"]], // letter16 'eh ܥ
+    [["167", "145"], ["140", "45"], ["150", "175"]], // letter17 Peh ܦ
+    [["165", "74"], ["126", "37"], ["63", "36"]], // letter18 Tsadeh ܨ
+    [["173", "130"], ["152", "157"], ["96", "158"]], // letter19 Qop ܩ
+    [["148", "148"], ["125", "177"], ["110", "45"]], // letter20 Resh ܪ
+    [["180", "140"], ["170", "73"], ["123", "155"]], // letter21 Sheen ܫ
+    [["162", "155"], ["28", "155"]] // letter22 Taw ܬ
 ];
+let soundEnabled = true; // global flag to control sound
 const POINT_SAMPLING_DISTANCE = 2; // px
 const TRACE_THRESHOLD = 20; // max distance in px to count as traced
 const COVERAGE_REQUIRED = 0.8; // 80% coverage to complete stroke
@@ -64,6 +65,7 @@ function animateStrokes() {
     const length = stroke.getTotalLength();
     const arrow = arrows[i];
     const circle = circles[i];
+    const label = labels[i];
 
     stroke.style.strokeDasharray = length;
     stroke.style.strokeDashoffset = length;
@@ -79,6 +81,7 @@ function animateStrokes() {
       stroke.style.transition = `stroke-dashoffset ${strokeAnimationDuration}s ease`; // remove this line to display the stroke immediately
       stroke.style.strokeDashoffset = '0';
       document.getElementById(`animateMotion${i}`).beginElement();
+      label.style.visibility = 'visible';
 
       setTimeout(() => {
         arrow.style.visibility = 'visible';
@@ -203,17 +206,15 @@ function setupTracing() {
 
         // Flash traced path on canvas green
         ctx.strokeStyle = 'rgba(0, 200, 0, 0.7)';
-        ctx.lineWidth = 10;
         ctx.beginPath();
 
         // Redraw the current canvas contents in green
         setTimeout(() => {
           // Reset styles after flash
-          ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
-          ctx.lineWidth = 10;
+          ctx.strokeStyle = '#ffffff';
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          strokes[completedIndex].style.stroke = 'gray';
+          strokes[completedIndex].style.stroke = '#FF9800'; // Reset stroke color to original
           currentStrokeIndex++;
 
           if (currentStrokeIndex < strokes.length) {
@@ -248,32 +249,51 @@ function setupTracing() {
 }
 
 function selectLetter(letterIndex) {
-  switchHighlightLetterButton(letterIndex);
-  switchHeaderLetter();
-  switchCanvasLetter();
+  updateLetter(letterIndex);
 }
 
 function clearCanvas() {
+  playLetterSound();
   switchCanvasLetter();
   sampleStrokePoints();
 }
 
 function previousLetter() {
-  switchHighlightLetterButton(currentLetterIndex - 1);
-  switchHeaderLetter();
-  switchCanvasLetter();
+  updateLetter(currentLetterIndex - 1);
 }
 
 function nextLetter() {
-  switchHighlightLetterButton(currentLetterIndex + 1);
-    switchHeaderLetter();
-    switchCanvasLetter();
+  updateLetter(currentLetterIndex + 1);
+}
+
+function updateLetter(letterIndex) {
+  switchHighlightLetterButton(letterIndex);
+  scrollLetterButtonIntoView();
+  playLetterSound();
+  switchHeaderLetter();
+  switchCanvasLetter();
 }
 
 function switchHighlightLetterButton(letterIndex) {
   document.querySelectorAll('.letter-list button')[currentLetterIndex].classList.remove('active');
   currentLetterIndex = letterIndex < 0 ? LETTERS.length - 1 : letterIndex >= LETTERS.length ? 0 : letterIndex;
   document.querySelectorAll('.letter-list button')[currentLetterIndex].classList.add('active');
+}
+
+function scrollLetterButtonIntoView() {
+  document.querySelectorAll('.letter-list button')[currentLetterIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}
+
+function playLetterSound() {
+  if (!soundEnabled) return;
+  const audio = new Audio(`sounds/${currentLetterIndex}.mp3`);
+  audio.play();
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const button = document.getElementById('soundToggle');
+  button.textContent = soundEnabled ? '🔊' : '🔇';
 }
 
 function switchHeaderLetter() {
@@ -406,6 +426,7 @@ function resetCurrentStrokes() {
     strokes = Array.from(document.querySelectorAll('.stroke'));
     arrows = Array.from(document.querySelectorAll('.arrow'));
     circles = Array.from(document.querySelectorAll('.startCircle'));
+    labels = Array.from(document.querySelectorAll('.label'));
 }
 
 window.onload = () => {
@@ -417,4 +438,14 @@ window.onload = () => {
   animateStrokes();
   sampleStrokePoints();
   setupTracing();
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+      document.querySelector("#nextButton")?.click();
+    } else if (event.key === "ArrowLeft") {
+      document.querySelector("#previousButton")?.click();
+    } else if (event.key.toLowerCase() === "c") {
+      document.querySelector("#clearButton")?.click();
+    }
+  });
 };

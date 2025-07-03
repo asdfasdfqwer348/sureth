@@ -8,7 +8,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1 id="letterHeader">Trace the Letter: ܐ</h1>
+  <div class="header-container">
+    <h1 id="letterHeader">Trace the Letter: ܐ</h1>
+    <button id="soundToggle" class="sound-btn" onclick="toggleSound()" title="Toggle Sound">🔊</button>
+  </div>
   <div id="letterList" class="letter-list">
     <button class="active" onclick="selectLetter(0)">ܐ</button>
     <button onclick="selectLetter(1)">ܒ</button>
@@ -24,7 +27,7 @@
     <button onclick="selectLetter(11)">ܠ</button>
     <button onclick="selectLetter(12)">ܡـ</button>
     <button onclick="selectLetter(13)">ܢـ</button>
-    <button onclick="selectLetter(14)">ܣـ</button>
+    <button onclick="selectLetter(14)">ܣ</button>
     <button onclick="selectLetter(15)">ܥ</button>
     <button onclick="selectLetter(16)">ܦ</button>
     <button onclick="selectLetter(17)">ܨ</button>
@@ -47,9 +50,9 @@
     <canvas id="traceCanvas" width="200" height="200"></canvas>
   </div>
 
-  <button onclick="previousLetter()">< Previous Letter</button>
-  <button onclick="clearCanvas()">Clear & Replay</button>
-  <button onclick="nextLetter()">Next Letter ></button>
+  <button class="control" id="previousButton" onclick="previousLetter()">< Previous</button>
+  <button class="control" id="clearButton" onclick="clearCanvas()">Clear</button>
+  <button class="control" id="nextButton" onclick="nextLetter()">Next ></button>
   <script src="script.js"></script>
 </body>
 </html>
